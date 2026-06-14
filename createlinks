@@ -4,30 +4,26 @@ use esmith::Build::CreateLinks qw(:all);
 use esmith::Build::Backup qw(:all);
 
 # our event specific for updating with yum without reboot
-$event = 'minecraft-update';
-#add here the path to your templates needed to expand
-#see the /etc/systemd/system-preset/49-koozali.preset should be present for systemd integration on all you yum update event
-
-# Maybe need ths in here as well:
-# /etc/dar/DailyBackup.dcf - if backup requested
+$event = 'smeserver-minecraft-update';
 
 foreach my $file (qw(
         /etc/systemd/system-preset/49-koozali.preset
+	/etc/httpd/conf/httpd.conf
+       /etc/rc.d/init.d/masq
 ))
 {
     templates2events( $file, $event );
 };
 #action needed in case we have a systemd unit
-event_link('systemd-default', $event, '10');
-event_link('systemd-reload', $event, '50');
+event_link('msm.sh', $event, '50');
 
 #services we might need to restart
-#event_services($event, 'xxxx' => 'restart', 'yyyy' => 'restart');
+event_services($event, 'msm' => 'restart', 'httpd-e-smith' => 'restart', 'wan' => 'reload');
 
 #Backup contrib files
-# backup_includes("minecraft", qw(
-    # files(s) to be backed up
-#));
+ backup_includes("minecraft", qw(
+   /opt/msm  files(s) to be backed up
+));
 
 #Other possible entries:
 #Server manager entry

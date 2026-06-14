@@ -2176,6 +2176,8 @@ command_config() {
 
 # Downloads latest versions of all MSM files
 command_update() {
+	echo "Update not available with Koozali Release, rpm based..."
+	exit 0
 	echo -n "Checking for updates to version ${VERSION}..."
 
 	local any_files_updated="false"

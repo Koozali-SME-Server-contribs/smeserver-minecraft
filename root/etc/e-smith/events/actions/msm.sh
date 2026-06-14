@@ -27,28 +27,28 @@ function download_latest_files() {
     fi
 
     install_log "Downloading latest MSM configuration file"
-    sudo wget ${UPDATE_URL}/msm.conf \
+    wget ${UPDATE_URL}/msm.conf \
         -O "$dl_dir/msm.conf.orig" || install_error "Couldn't download configuration file"
 
     install_log "Downloading latest MSM cron file"
-    sudo wget ${UPDATE_URL}/cron/msm \
+    wget ${UPDATE_URL}/cron/msm \
         -O "$dl_dir/msm.cron.orig" || install_error "Couldn't download cron file"
 
     install_log "Downloading latest MSM version"
-    sudo wget ${UPDATE_URL}/init/msm \
+    wget ${UPDATE_URL}/init/msm \
         -O "$dl_dir/msm.init.orig" || install_error "Couldn't download init file"
 }
 
 # Updates rest of MSM using init script updater
 function update_msm() {
     install_log "Asking MSM to update itself"
-    sudo /usr/bin/msm update --noinput
+    /usr/bin/msm update --noinput
 }
 
 # Updates rest of MSM using init script updater
 function setup_jargroup() {
     install_log "Setup default jar groups"
-    sudo /usr/bin/msm jargroup create minecraft minecraft
+    /usr/bin/msm jargroup create minecraft minecraft
 }
 
 function install_complete() {
@@ -56,13 +56,17 @@ function install_complete() {
 }
 
 function install_msm() {
-    download_latest_files
-    update_msm
+    # we fixed a few things in advance to current, and aded few patches 
+    # we do not want it to be overwitten
+    #update_msm
     setup_jargroup
     install_complete
 }
 
 install_msm
+
+sed -i 's|MSM="${MSM_SCRIPT:-/etc/init.d/msm}"|MSM="${MSM_SCRIPT:-/usr/bin/msm}"|' /etc/bash_completion.d/msm
+
 mkdir -p /opt/msm/dynmap
 chown minecraft:minecraft -R /opt/msm
 chown minecraft:apache -R /opt/msm/dynmap

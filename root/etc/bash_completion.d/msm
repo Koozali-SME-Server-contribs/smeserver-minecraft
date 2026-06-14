@@ -14,7 +14,7 @@ if [ -f "/etc/profile.d/msm.sh" ]; then
 	source "/etc/profile.d/msm.sh"
 fi
 
-MSM="${MSM_SCRIPT:-/etc/init.d/msm}"
+MSM="${MSM_SCRIPT:-/usr/bin/msm}"
 
 
 ### Auto Completion Function

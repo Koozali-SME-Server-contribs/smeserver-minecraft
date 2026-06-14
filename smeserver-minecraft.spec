@@ -21,8 +21,13 @@ AutoReqProv: no
 this is a wrapper to install msm hq and manage your minecraft server.
 
 %changelog
-* Day MMMM DD YYYY <brianr@koozali.org> 1.0-1.sme
-- Initial code - create RPM [SME:99999]
+* Sun Jun 14 2026 Jean-Philippe Pialasse <jpp@koozali.org> 1.0-1.sme
+- initial code based on Commit 7a9d120
+- buildTools.jar added from spigot
+- set java17 as default path
+- set 2560M as default ram
+- fix config set [MSM 371] 
+- disable auto update as we fixed few things, prevents regression 
 
 %prep
 
@@ -38,6 +43,7 @@ rm -f %{name}-%{version}-filelist
 /sbin/e-smith/genfilelist $RPM_BUILD_ROOT \
   --dir /opt/msm 'attr(755,minecraft,minecraft)' \
   --file /etc/msm.conf 'attr(755,minecraft,minecraft)'\
+  --file /usr/bin/msm  'attr(755,root,root)'\
 > %{name}-%{version}-filelist
 #echo "%doc COPYING"  >> %{name}-%{version}-filelist
 #--dir <dir> 'attr(755,user,grp)' \
