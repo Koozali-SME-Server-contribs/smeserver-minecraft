@@ -1,4 +1,4 @@
-%define name minecraft
+%define name smeserver-minecraft
 %define version 1.0
 %define release 1
 Summary: This is what minecraft does.
@@ -13,6 +13,8 @@ Prefix: %{_prefix}
 BuildArchitectures: noarch
 BuildRequires: smeserver-devtools
 Requires: smeserver-release >= 11.0
+Requires: jq rsync screen wget zip sudo
+Requires: java-17-openjdk
 AutoReqProv: no
 
 %description
@@ -34,6 +36,8 @@ rm -rf $RPM_BUILD_ROOT
 (cd root   ; find . -depth -print | cpio -dump $RPM_BUILD_ROOT)
 rm -f %{name}-%{version}-filelist
 /sbin/e-smith/genfilelist $RPM_BUILD_ROOT \
+  --dir /opt/msm 'attr(755,minecraft,minecraft)' \
+  --file /etc/msm.conf 'attr(755,minecraft,minecraft)'\
 > %{name}-%{version}-filelist
 #echo "%doc COPYING"  >> %{name}-%{version}-filelist
 #--dir <dir> 'attr(755,user,grp)' \
@@ -44,6 +48,8 @@ cd ..
 rm -rf %{name}-%{version}
 
 %pre
+grep '^minecraft:' /etc/passwd > /dev/null || \
+/usr/sbin/useradd -c "minecraft" -M -d /opt/msm   -s /bin/bash minecraft
 
 %preun
 

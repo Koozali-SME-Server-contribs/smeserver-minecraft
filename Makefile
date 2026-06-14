@@ -1,5 +1,5 @@
 COMMON_URL := https://src.koozali.org/smeserver/common.git
-NAME := minecraft
+NAME := smeserver-minecraft
 SPECFILE = $(firstword $(wildcard *.spec))
 
 define find-makefile-common

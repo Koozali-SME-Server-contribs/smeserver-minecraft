@@ -1,0 +1,5 @@
+Alias /minecraft /opt/msm/dynmap
+<Directory /opt/msm/dynmap>
+  Require all granted
+</Directory>
+
