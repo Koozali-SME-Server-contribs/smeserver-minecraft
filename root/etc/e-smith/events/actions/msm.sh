@@ -49,6 +49,17 @@ function update_msm() {
 function setup_jargroup() {
     install_log "Setup default jar groups"
     /usr/bin/msm jargroup create minecraft minecraft
+    /usr/bin/msm jargroup create purpur purpur
+    # needs local build
+    /usr/bin/msm jargroup create spigot https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
+    /usr/bin/msm jargroup create paper paper
+    /usr/bin/msm jargroup create leaf leaf
+    /usr/bin/msm jargroup create leaves leaves
+    # need complex install ?
+    /usr/bin/msm jargroup create fabric fabric
+    # quilt more ocmplex
+    #/usr/bin/msm jargroup create quilt quilt
+    /usr/bin/msm jargroup create folia folia
 }
 
 function install_complete() {
