@@ -1,0 +1,80 @@
+% layout 'default', title => "Sme server 2 - MSM (Minecraft Server Manager)";
+
+% content_for 'module' => begin
+  <div id='module' class='module msm-panel'>
+
+    <!-- Debug section: matches your working template pattern -->
+    % if (config->{debug} == 1) {
+      <p>
+        %= dumper $c->current_route
+        %= dumper $servers
+        %= dumper $jargroups
+      </p>
+    % }
+
+    <!-- Error handling container -->
+    % if ( stash 'error' ) {
+      <br><div class="sme-error">
+        %= $c->render_to_string( inline => stash 'error' )
+      </div>
+    % }
+
+    <!-- SECTION 1: Active Minecraft Instances -->
+    <div class="sme-section" style="margin-bottom: 30px;">
+        <h2>Active Minecraft Instances</h2>
+        <table class="sme-table" style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+            <thead>
+                <tr style="background-color: #f4f4f4; border-bottom: 2px solid #ccc; text-align: left;">
+                    <th style="padding: 10px;">Server Name</th>
+                    <th style="padding: 10px;">Assigned JAR File (msm-jar-path)</th>
+                    <th style="padding: 10px;">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                % for my $server (@$servers) {
+                    <tr style="border-bottom: 1px solid #ddd;">
+                        <td style="padding: 10px;"><strong><%= $server->{name} %></strong></td>
+                        <td style="padding: 10px;"><code style="color: #e83e8c; font-family: monospace;"><%= $server->{jar} %></code></td>
+                        <td style="padding: 10px;"><span style="color: green; font-weight: bold;">Configured</span></td>
+                    </tr>
+                % }
+                % if (!@$servers) {
+                    <tr><td colspan="3" style="padding: 10px;">No active server instances found in /opt/msm/servers.</td></tr>
+                % }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- SECTION 2: Available Jar Groups & Builds -->
+    <div class="sme-section">
+        <h2>JAR Groups & Compiled Builds</h2>
+        
+        % for my $group (@$jargroups) {
+            <div class="sme-card" style="border: 1px solid #ccc; border-radius: 4px; margin-bottom: 20px; background: #fff;">
+                <!-- Storage group header block -->
+                <div style="background-color: #f8f9fa; padding: 10px; border-bottom: 1px solid #ccc; font-weight: bold;">
+                    Storage Group: <%= ucfirst($group->{name}) %>
+                </div>
+                <!-- Nested listing of stored JAR files -->
+                <div style="padding: 10px;">
+                    <ul style="list-style-type: none; padding-left: 5px; margin: 0; max-height: 200px; overflow-y: auto;">
+                        % for my $file (@{$group->{files}}) {
+                            <li style="padding: 6px 0; border-bottom: 1px solid #eee;">
+                                <span style="font-family: monospace; display: block; font-weight: bold;"><%= $file->{filename} %></span>
+                                <span style="font-size: 0.85em; color: #6c757d;">
+                                    Generated on: <%= $file->{date} %>
+                                </span>
+                            </li>
+                        % }
+                        % if (!@{$group->{files}}) {
+                            <li style="color: #6c757d;">No compiled JAR files found in this storage group.</li>
+                        % }
+                    </ul>
+                </div>
+            </div>
+        % }
+    </div>
+
+</div>
+% end
+
