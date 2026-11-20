@@ -1,6 +1,6 @@
 %define name smeserver-minecraft
 %define version 1.0
-%define release 2
+%define release 3
 Summary: This is what minecraft does.
 Name: %{name}
 Version: %{version}
@@ -24,6 +24,9 @@ AutoReqProv: no
 this is a wrapper to install msm hq and manage your minecraft server.
 
 %changelog
+* Fri Nov 20 2026 Jean-Philippe Pialasse <jpp@koozali.org> 1.0-3.sme
+- redure verbosity of cron entries
+
 * Fri Jun 19 2026 Jean-Philippe Pialasse <jpp@koozali.org> 1.0-2.sme
 - add fabric  folia  leaf  leaves  minecraft  paper  purpur  quilt  spigot support
 - get java 11, 17, 21, 26
